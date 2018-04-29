@@ -3,12 +3,17 @@
     "description": "Convert dotenv files to PHP",
     "type": "library",
     "license": "MIT",
+    "keywords": ["dotenv","env","convert"],
+    "homepage": "https://github.com/jchook/dotenv-to-php",
     "authors": [
         {
             "name": "Wes Roberts",
             "email": "g0r6p@a.zinc.email"
         }
     ],
+    "require": {
+        "php": ">=7.1.0"
+    },
     "bin": ["bin/dotenv-to-php"],
     "scripts": {
       "build-env": "bin/dotenv-to-php .env > .env.php"

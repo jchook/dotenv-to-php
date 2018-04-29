@@ -29,12 +29,11 @@ include_once __DIR__ . '/.env.php';
 ```
 
 
-## Integrate
+## Building `.env.php`
 
 Ideally you can integrate the `.env.php` file generation into your existing build process (either for CI or local development). All examples below assume that your dotenv file is saved in the current working directory as `.env`.
 
-
-### Shell
+### Bash
 
 The simplest method is to call [`bin/dotenv-to-php`](bin/dotenv-to-php) directly.
 
