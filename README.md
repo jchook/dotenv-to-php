@@ -5,9 +5,9 @@ Easily convert dotenv `.env` files to `.env.php`.
 
 ## Rationale
 
-1. Converting your env to PHP is **much faster** and leaner than loading and parsing a .env file every time. Instead, the env is compiled to raw bytecode and can be cached by [opcache](http://php.net/manual/en/intro.opcache.php).
+1. **It's faster.** Converting your dotenv to PHP allows it to be stored in opcache and avoids comparatively expensive disk I/O and parsing on every request.
 
-2. This technique is [simple](bin/dotenv-to-php). It contains **no regex** and **no custom parsers**. Compare this to [phpdotenv](https://github.com/vlucas/phpdotenv/blob/475e5e0d27d669a59f9a6d04844255fa302d5d39/src/Loader.php#L228).
+2. **It's leaner.** No runtime code. It contains no regex, and no custom parsers. Contrast this with [phpdotenv](https://github.com/vlucas/phpdotenv/blob/475e5e0d27d669a59f9a6d04844255fa302d5d39/src/Loader.php#L228).
 
 
 ## Install
@@ -29,18 +29,20 @@ include_once __DIR__ . '/.env.php';
 ```
 
 
-## Building `.env.php`
+## Integrate
 
 Ideally you can integrate the `.env.php` file generation into your existing build process (either for CI or local development). All examples below assume that your dotenv file is saved in the current working directory as `.env`.
 
 
 ### Shell
 
-The simplest method is to call [`bin/dotenv-to-php`](bin/dotenv-to-php) directly, giving a path to the `.env` file as the first argument.
+The simplest method is to call [`bin/dotenv-to-php`](bin/dotenv-to-php) directly.
 
 ```sh
-/path/to/dotenv-to-php .env > .env.php
+/path/to/dotenv-to-php
 ```
+
+Usage is roughly `dotenv-to-php [infile] [outfile]`. If no infile or outfile is specified, they default to `.env` and `$infile.php` respectively. You can also specify `-` (hyphen) for stdin or stdout... respectively.
 
 ### Composer
 
@@ -49,7 +51,7 @@ If you installed via composer, you can integrate it as a script in your `compose
 ```json
 {
 	"scripts": {
-		"build-env": "dotenv-to-php .env > .env.php"
+		"build-env": "dotenv-to-php .env .env.php"
 	}
 }
 ```
@@ -66,7 +68,7 @@ Many folks are using node js to compile their static assets such as javascript. 
 
 ```js
 const childProcess = require('child_process');
-childProcess.spawn('/path/to/dotenv-to-php', ['.env', '>', '.env.php']);
+childProcess.spawn('/path/to/dotenv-to-php', ['.env', '.env.php']);
 ```
 
 
@@ -87,9 +89,15 @@ module.exports = {
 		// Build PHP env
 		{apply: (compiler) => {
 			compiler.hooks.afterEnvironment.tap('DotEnvToPhp', (compilation) => {
-				childProcess.spawn('/path/to/dotenv-to-php', ['.env', '>', '.env.php']);
+				childProcess.spawn('/path/to/dotenv-to-php', ['.env', '.env.php']);
 			});
 		}}
 	]
 };
 ```
+
+
+
+## License
+
+MIT.

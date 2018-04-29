@@ -6,19 +6,26 @@
 # Mark variables which are modified or created for export.
 set -a
 
+# Exit on error
+set -e
+
 # Load dotenv file
-if [ -f "${1:-/dev/stdin}" ]; then
-	source "${1:-/dev/stdin}"
+if [ -f "$1" ]; then source "$1"; __out="$1.php"
+elif [ "$1" == '-' ]; then source /dev/stdin; __out=/dev/stdout
+elif [ -f ".env" ]; then source ".env"; __out=".env.php"
+else echo "Missing .env" >> /dev/stderr; exit 1;
 fi;
 
+# Output override
+if [ "$2" == '-' ]; then __out=/dev/stdout
+elif [ ! -z "$2" ]; then __out="$2"
+fi
+
 # Dump current env as PHP
-echo '<?php $_SERVER = array_merge('
+printf '<?php $_SERVER = array_merge(' > $__out
 /usr/bin/env php -r '
-	$env = getenv();
-	unset($env["PWD"]);
-	unset($env["SHLVL"]);
-	unset($env["_"]);
+	$ignore = array("PWD", "SHLVL", "_", "__out");
+	$env = array_diff_key(getenv(), array_flip($ignore));
 	var_export($env);
-'
-echo
-echo ', $_SERVER);'
+' >> $__out
+printf ', $_SERVER);' >> $__out
