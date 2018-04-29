@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Ensure we are running on a clean environment.
+[ -v HOME ] && exec -c "$0" "$@"
+
+# Mark variables which are modified or created for export.
+set -a
+
+# Load dotenv file
+if [ -f "${1:-/dev/stdin}" ]; then
+	source "${1:-/dev/stdin}"
+fi;
+
+# Dump current env as PHP
+echo '<?php $_SERVER = array_merge('
+/usr/bin/env php -r '
+	$env = getenv();
+	unset($env["PWD"]);
+	unset($env["SHLVL"]);
+	unset($env["_"]);
+	var_export($env);
+'
+echo
+echo ', $_SERVER);'

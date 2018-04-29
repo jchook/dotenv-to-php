@@ -1,0 +1,16 @@
+{
+    "name": "jchook/dotenv-to-php",
+    "description": "Convert dotenv files to PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wes Roberts",
+            "email": "g0r6p@a.zinc.email"
+        }
+    ],
+    "bin": ["bin/dotenv-to-php"],
+    "scripts": {
+      "build-env": "bin/dotenv-to-php .env > .env.php"
+    }
+}
