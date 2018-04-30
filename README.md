@@ -7,12 +7,12 @@ Easily convert dotenv `.env` files to `.env.php`.
 
 1. **It's faster.** Converting your dotenv to PHP allows it to be stored in opcache and avoids comparatively expensive disk I/O and parsing on every request.
 
-2. **It's leaner.** Minimal runtime code. It contains no regex, and no custom parsers. Contrast this with [phpdotenv](https://github.com/vlucas/phpdotenv/blob/475e5e0d27d669a59f9a6d04844255fa302d5d39/src/Loader.php#L228).
+2. **It's simpler.** Minimal runtime code. The transpiler is only [42 lines of code](bin/dotenv-to-php), contains no regex, and no custom parsers. Contrast this with [phpdotenv](https://github.com/vlucas/phpdotenv/blob/475e5e0d27d669a59f9a6d04844255fa302d5d39/src/Loader.php#L228).
 
 
 ## Install
 
-You can just [download the one file](bin/dot-env-to-php) **-OR-** add it as a dev dependency via composer:
+You can just [download the one file](bin/dotenv-to-php) **-OR-** add it as a dev dependency via composer:
 
 	composer require --dev jchook/dotenv-to-php
 
