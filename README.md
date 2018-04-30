@@ -2,6 +2,8 @@
 
 Easily convert dotenv `.env` files to `.env.php`.
 
+<img src="https://i.imgur.com/b7hMNpp.gif">
+
 
 ## Rationale
 
