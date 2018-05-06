@@ -5,13 +5,41 @@ Convert dotenv files to PHP.
 ![Demo of dotenv-to-php](https://i.imgur.com/b7hMNpp.gif)
 
 
-## Why use dotenv?
+
+## Why use it?
 
 Storing configuration in the environment has many inherent advantages. For example, [it's a tenant of The Twelve Factor App](https://www.12factor.net/config) and allows you to keep your passwords separate from your code.
 
-However, it's not always practical to set environment variables on development machines or continuous integration servers where multiple projects are run. In these scenarios, **dotenv** can load variables from a .env as needed.
+However, it's not always practical to set environment variables on development machines or continuous integration servers where multiple projects are run. In these scenarios, we can load variables from a .env as needed.
 
-To get started, create a .env file in the root directory of your project. Add all environment-specific variables (anything likely to change between servers or deployments) on individual lines like so:
+Instead of parsing a .env at runtime with complex dependencies, we can use `dotenv-to-php` to compile our .env to native PHP.
+
+1. **It's fast.** The conversion is instantaneous. At runtime, simply load your env vars using the generated PHP. You can even use it in production.
+
+2. **It's simple.** No runtime dependency. The transpiler is only [42 lines with comments](bin/dotenv-to-php), contains no regex, and no custom parsers. Contrast this with [phpdotenv](https://github.com/vlucas/phpdotenv/blob/475e5e0d27d669a59f9a6d04844255fa302d5d39/src/Loader.php#L228).
+
+
+## Install
+
+You can just [download the one file](bin/dotenv-to-php) **-OR-** add it as a dev dependency via composer:
+
+	composer require --dev jchook/dotenv-to-php
+
+
+In your PHP application, simply include the to-be-compiled `.env.php` file. Your loaded environment variables will be available via `$_SERVER`, `$_ENV`, and `getenv()`.
+
+```php
+<?php
+
+// somewhere in index.php
+include_once __DIR__ . '/.env.php';
+
+?>
+```
+
+## Create .env
+
+If you don't already have one, create a `.env` file in the root directory of your project. Add all environment-specific variables (anything likely to change between servers or deployments) on individual lines like so:
 
 ```sh
 # Application
@@ -30,47 +58,20 @@ Notice that you should quote values with spaces, etc. and that it's possible to 
 **Do not commit your .env file to source control.** Instead, store it somewhere secure, or use a tool like [vault](https://www.vaultproject.io/).
 
 
-## Why use dotenv-to-php?
+## Build .env.php
 
-Instead of parsing a .env at runtime with complex dependencies, we can use `dotenv-to-php` to compile our .env to native PHP.
-
-**It's fast.** The conversion is instantaneous. At runtime, simply load your env vars using the generated PHP. You can even use it in production.
-
-**It's simple.** No runtime dependency. The transpiler is only [42 lines with comments](bin/dotenv-to-php), contains no regex, and no custom parsers. Contrast this with [phpdotenv](https://github.com/vlucas/phpdotenv/blob/475e5e0d27d669a59f9a6d04844255fa302d5d39/src/Loader.php#L228).
-
-
-## Install
-
-You can just [download the one file](bin/dotenv-to-php) **-OR-** add it as a dev dependency via composer:
-
-	composer require --dev jchook/dotenv-to-php
-
-
-In your PHP application, simply include the to-be-compiled `.env.php` file.
-
-```php
-<?php
-
-// somewhere in index.php
-include_once __DIR__ . '/.env.php';
-
-?>
-```
-
-
-## Building `.env.php`
-
-Ideally you can integrate the `.env.php` file generation into your existing build process (either for CI or local development). All examples below assume that your dotenv file is saved in the current working directory as `.env`.
-
-### Bash
-
-The simplest method is to call [`bin/dotenv-to-php`](bin/dotenv-to-php) directly.
+Simply call [`bin/dotenv-to-php`](bin/dotenv-to-php) via command-line to convert your .env file to PHP.
 
 ```sh
 /path/to/dotenv-to-php
 ```
 
 Usage is roughly `dotenv-to-php [infile] [outfile]`. If no infile or outfile is specified, they default to `.env` and `$infile.php` respectively. You can also specify `-` (hyphen) for stdin or stdout... respectively.
+
+
+## Integration
+
+Ideally you can integrate the `.env.php` file generation into your existing build process (either for CI or local development). All examples below assume that your dotenv file is saved in the current working directory as `.env`.
 
 ### Composer
 
