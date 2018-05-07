@@ -2,7 +2,8 @@
 
 Convert dotenv files to PHP.
 
-![Demo of dotenv-to-php](https://i.imgur.com/g2XvZOI.gif)
+![Demo of dotenv-to-php](https://i.imgur.com/OJToK1v.gif)
+
 
 ## Why use it?
 
@@ -23,17 +24,6 @@ You can just [download the one file](bin/dotenv-to-php) **-OR-** add it as a dev
 
 	composer require --dev jchook/dotenv-to-php
 
-
-In your PHP application, simply include the to-be-compiled `.env.php` file. Your loaded environment variables will be available via `$_SERVER`, `$_ENV`, and `getenv()`.
-
-```php
-<?php
-
-// somewhere in index.php
-include_once __DIR__ . '/.env.php';
-
-?>
-```
 
 ## 2. Create .env
 
@@ -68,6 +58,20 @@ Usage is roughly `dotenv-to-php [infile] [outfile]`. If no infile or outfile is 
 
 
 ## 4. Integrate
+
+In your PHP application, simply include the compiled `.env.php` file. Your loaded environment variables will be available via `$_SERVER`, `$_ENV`, and `getenv()`.
+
+```php
+<?php
+
+// somewhere in index.php
+include_once __DIR__ . '/.env.php';
+
+// Anywhere you need it...
+echo $_SERVER['DB_USER']; // myapp
+
+?>
+```
 
 Ideally you can integrate the `.env.php` file generation into your existing build process (either for CI or local development). All examples below assume that your dotenv file is saved in the current working directory as `.env`.
 
