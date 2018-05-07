@@ -2,9 +2,7 @@
 
 Convert dotenv files to PHP.
 
-![Demo of dotenv-to-php](https://i.imgur.com/b7hMNpp.gif)
-
-
+![Demo of dotenv-to-php](https://i.imgur.com/g2XvZOI.gif)
 
 ## Why use it?
 
